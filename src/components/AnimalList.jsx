@@ -1,25 +1,34 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+import axios from "axios";
 import AnimalCard from "./AnimalCard";
 
 function AnimalList() {
-  // Temporário: Lista fake de animais (antes do backend)
-  const animais = [
-    { id: 1, nome: "Leão", especie: "Panthera leo", idade: 8 },
-    { id: 2, nome: "Girafa", especie: "Giraffa camelopardalis", idade: 5 },
-    { id: 3, nome: "Elefante", especie: "Loxodonta africana", idade: 12 }
-  ];
+  const [animais, setAnimais] = useState([]);
+
+  useEffect(() => {
+  axios.get("http://127.0.0.1:8000/animais")
+    .then((res) => {
+      console.log("Resposta da API:", res.data); // 👈 Adicione isso!
+      setAnimais(res.data);
+    })
+    .catch((erro) => console.error("Erro ao buscar animais:", erro));
+}, []);
 
   return (
     <div>
       <h2>Animais cadastrados:</h2>
-      {animais.map((animal) => (
-        <AnimalCard 
-          key={animal.id}
-          nome={animal.nome}
-          especie={animal.especie}
-          idade={animal.idade}
-        />
-      ))}
+      {animais.length === 0 ? (
+        <p>Nenhum animal cadastrado.</p>
+      ) : (
+        animais.map((animal) => (
+          <AnimalCard
+            key={animal.id}
+            nome={animal.nome}
+            especie={animal.especie}
+            idade={"N/A"} // nosso backend ainda não envia idade
+          />
+        ))
+      )}
     </div>
   );
 }
