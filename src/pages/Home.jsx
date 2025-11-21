@@ -1,22 +1,24 @@
 import React, { useState } from "react";
-import AnimalList from "../components/AnimalList";
 import AnimalForm from "../components/AnimalForm";
+import AnimalList from "../components/AnimalList";
 
 function Home() {
-  const [atualizarLista, setAtualizarLista] = useState(false);
+  const [atualizar, setAtualizar] = useState(false);
+
+  function atualizarLista() {
+    setAtualizar(!atualizar); // força atualização na lista
+  }
 
   return (
     <div>
       <h1>Jardim Zoológico</h1>
       <p>Bem-vindo ao sistema do Zoo!</p>
 
-      {/* Passa a função para o formulário */}
-      <AnimalForm onAnimalCadastrado={() => setAtualizarLista(!atualizarLista)} />
-
+      <AnimalForm atualizarLista={atualizarLista} />
+      
       <hr />
 
-      {/* Passa o estado como sinal para a lista */}
-      <AnimalList atualizar={atualizarLista} />
+      <AnimalList atualizar={atualizar} />
     </div>
   );
 }

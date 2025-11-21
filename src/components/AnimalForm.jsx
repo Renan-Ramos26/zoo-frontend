@@ -1,37 +1,56 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import axios from "axios";
-import AnimalCard from "./AnimalCard";
 
-function AnimalList(props) {
-  const [animais, setAnimais] = useState([]);
+function AnimalForm({ onAnimalCadastrado }) {
+  const [formData, setFormData] = useState({
+    nome: "",
+    descricao: "",
+    data_nascimento: "",
+    especie: "",
+    habitat: "",
+    pais_origem: ""
+  });
 
-  useEffect(() => {
-    axios
-      .get("http://127.0.0.1:8000/animais")
-      .then((res) => {
-        console.log("Resposta da API:", res.data);
-        setAnimais(res.data);
+  function handleChange(e) {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+  }
+
+  function handleSubmit(e) {
+    e.preventDefault();
+
+    axios.post("http://127.0.0.1:8000/animais", formData)
+      .then(() => {
+        alert("Animal cadastrado com sucesso!");
+        
+        if (onAnimalCadastrado) onAnimalCadastrado(); // 🚀 Atualiza lista automaticamente!
+
+        setFormData({
+          nome: "",
+          descricao: "",
+          data_nascimento: "",
+          especie: "",
+          habitat: "",
+          pais_origem: ""
+        });
       })
-      .catch((erro) => console.error("Erro ao buscar animais:", erro));
-  }, [props.atualizar]); // 👈 sempre que atualizar muda, faz o GET de novo
+      .catch(() => alert("Erro ao cadastrar animal!"));
+  }
 
   return (
-    <div>
-      <h2>Cadastrados:</h2>
-      {animais.length === 0 ? (
-        <p>Nenhum animal cadastrado.</p>
-      ) : (
-        animais.map((animal) => (
-          <AnimalCard
-            key={animal.id}
-            nome={animal.nome}
-            especie={animal.especie}
-            idade={"N/A"} // idade calculada será o próximo passo
-          />
-        ))
-      )}
-    </div>
+    <form onSubmit={handleSubmit}>
+      <h2>Cadastrar Animal</h2>
+
+      <input name="nome" placeholder="Nome" value={formData.nome} onChange={handleChange} required />
+      <input name="descricao" placeholder="Descrição" value={formData.descricao} onChange={handleChange} required />
+      <input type="date" name="data_nascimento" value={formData.data_nascimento} onChange={handleChange} required />
+      <input name="especie" placeholder="Espécie" value={formData.especie} onChange={handleChange} required />
+      <input name="habitat" placeholder="Habitat" value={formData.habitat} onChange={handleChange} required />
+      <input name="pais_origem" placeholder="País de origem" value={formData.pais_origem} onChange={handleChange} required />
+
+      <button type="submit">Cadastrar</button>
+    </form>
   );
 }
 
-export default AnimalList;
+export default AnimalForm;
+

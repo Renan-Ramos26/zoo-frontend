@@ -2,17 +2,18 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import AnimalCard from "./AnimalCard";
 
-function AnimalList() {
+function AnimalList({ atualizar }) {
   const [animais, setAnimais] = useState([]);
 
+  function buscarAnimais() {
+    axios.get("http://127.0.0.1:8000/animais")
+      .then((res) => setAnimais(res.data))
+      .catch(() => console.error("Erro ao buscar animais"));
+  }
+
   useEffect(() => {
-  axios.get("http://127.0.0.1:8000/animais")
-    .then((res) => {
-      console.log("Resposta da API:", res.data); // 👈 Adicione isso!
-      setAnimais(res.data);
-    })
-    .catch((erro) => console.error("Erro ao buscar animais:", erro));
-}, []);
+    buscarAnimais();
+  }, [atualizar]); // ⬅ atualiza quando cadastrar
 
   return (
     <div>
@@ -25,7 +26,7 @@ function AnimalList() {
             key={animal.id}
             nome={animal.nome}
             especie={animal.especie}
-            idade={"N/A"} // nosso backend ainda não envia idade
+            data_nascimento={animal.data_nascimento}
           />
         ))
       )}
