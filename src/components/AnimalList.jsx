@@ -13,7 +13,7 @@ function AnimalList({ atualizar }) {
 
   useEffect(() => {
     buscarAnimais();
-  }, [atualizar]); // ⬅ atualiza quando cadastrar
+  }, [atualizar]); // ⬅ atualiza quando cadastrar ou editar/excluir
 
   return (
     <div>
@@ -24,9 +24,11 @@ function AnimalList({ atualizar }) {
         animais.map((animal) => (
           <AnimalCard
             key={animal.id}
+            id={animal.id}
             nome={animal.nome}
             especie={animal.especie}
             data_nascimento={animal.data_nascimento}
+            atualizarLista={buscarAnimais} // 🔁 MUITO IMPORTANTE
           />
         ))
       )}
