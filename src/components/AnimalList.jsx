@@ -13,7 +13,7 @@ function AnimalList({ atualizar }) {
 
   useEffect(() => {
     buscarAnimais();
-  }, [atualizar]); // ⬅ atualiza quando cadastrar ou editar/excluir
+  }, [atualizar]); // Atualiza quando cadastrar/editar/excluir
 
   return (
     <div>
@@ -28,7 +28,10 @@ function AnimalList({ atualizar }) {
             nome={animal.nome}
             especie={animal.especie}
             data_nascimento={animal.data_nascimento}
-            atualizarLista={buscarAnimais} // 🔁 MUITO IMPORTANTE
+            descricao={animal.descricao}
+            habitat={animal.habitat}
+            pais_origem={animal.pais_origem}
+            atualizarLista={buscarAnimais} // Importante
           />
         ))
       )}

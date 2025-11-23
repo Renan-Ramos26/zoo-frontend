@@ -21,8 +21,7 @@ function AnimalForm({ onAnimalCadastrado }) {
     axios.post("http://127.0.0.1:8000/animais", formData)
       .then(() => {
         alert("Animal cadastrado com sucesso!");
-        
-        if (onAnimalCadastrado) onAnimalCadastrado(); // 🚀 Atualiza lista automaticamente!
+        if (onAnimalCadastrado) onAnimalCadastrado();
 
         setFormData({
           nome: "",
@@ -37,7 +36,7 @@ function AnimalForm({ onAnimalCadastrado }) {
   }
 
   return (
-    <form onSubmit={handleSubmit}>
+    <form onSubmit={handleSubmit} style={{ marginBottom: "20px" }}>
       <h2>Cadastrar Animal</h2>
 
       <input name="nome" placeholder="Nome" value={formData.nome} onChange={handleChange} required />
@@ -53,4 +52,3 @@ function AnimalForm({ onAnimalCadastrado }) {
 }
 
 export default AnimalForm;
-
